@@ -34,10 +34,10 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         process::exit(1);
     });
 
-    let_input = get_user_input();
-    // let letters = separate_into_letters(input);
-    let letters = vec!['A', 'C', 'R', 'G', 'D', 'E'];
+    let input = get_user_input();
+    let letters = separate_into_letters(input);
     let words_to_test = generate_permutations(&letters, &config.min_size);
+
     for word in actual_words(dictionary, words_to_test) {
         println!("Dictionary has: {}!", word);
     }
@@ -88,4 +88,9 @@ fn get_user_input() -> String {
         .expect("Failed to read line.");
 
     input
+}
+
+fn separate_into_letters(mut input: String) -> Vec<char> {
+    input.retain(|c| !c.is_whitespace());
+    input.chars().collect()
 }
