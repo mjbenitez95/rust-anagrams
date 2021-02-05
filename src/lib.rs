@@ -28,7 +28,8 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         process::exit(1);
     });
 
-    for word in actual_words(dictionary) {
+    let words_to_test = vec!["GYM", "FISH", "ELIDE", "GLIDE", "DELIRIUM"];
+    for word in actual_words(dictionary, words_to_test) {
         println!("Dictionary has: {}!", word);
     }
 
@@ -39,11 +40,10 @@ fn lines_from_file(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
     BufReader::new(File::open(filename)?).lines().collect()
 }
 
-fn actual_words(dictionary: Vec<String>) -> Vec<String> {
-    let words = vec!["GYMNASIUM", "ALGORITHM", "PHONE", "AMNZ", "SKADF"];
+fn actual_words(dictionary: Vec<String>, words_to_test: Vec<&str>) -> Vec<String> {
     let mut actual_words = Vec::new();
 
-    for word in words {
+    for word in words_to_test {
         let word_to_search = String::from(word);
         match dictionary.binary_search(&word_to_search) {
             Ok(_) => actual_words.push(word_to_search),
