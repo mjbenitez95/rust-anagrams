@@ -38,9 +38,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let letters = separate_into_letters(input);
     let words_to_test = generate_permutations(&letters, &config.min_size);
 
-    for word in actual_words(dictionary, words_to_test) {
-        println!("Dictionary has: {}!", word);
-    }
+    println!("Possible words are: {:?}.", actual_words(dictionary, words_to_test));
 
     Ok(())
 }
