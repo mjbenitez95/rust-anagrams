@@ -23,13 +23,13 @@ impl Config {
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let words_list = lines_from_file(config.words_file).unwrap_or_else(|err| {
+    let dictionary = lines_from_file(config.words_file).unwrap_or_else(|err| {
         eprintln!("Problem reading file: {}", err);
         process::exit(1);
     });
 
-    for word in words_list {
-        println!("Words list has: {}!", word);
+    for word in actual_words(dictionary) {
+        println!("Dictionary has: {}!", word);
     }
 
     Ok(())
@@ -37,4 +37,18 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 fn lines_from_file(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
     BufReader::new(File::open(filename)?).lines().collect()
+}
+
+fn actual_words(dictionary: Vec<String>) -> Vec<String> {
+    let words = vec!["GYMNASIUM", "ALGORITHM", "PHONE", "AMNZ", "SKADF"];
+    let mut actual_words = Vec::new();
+
+    for word in words {
+        let word_to_search = String::from(word);
+        match dictionary.binary_search(&word_to_search) {
+            Ok(_) => actual_words.push(word_to_search),
+            Err(_) => (),
+        }
+    }
+    actual_words
 }
