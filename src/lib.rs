@@ -34,9 +34,14 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         process::exit(1);
     });
 
-    let letters = vec!['G', 'A', 'T', 'R', 'E', 'R'];
+    let mut _input = String::new();
+    // println!("Please enter some letters: ");
+    // io::stdin()
+    //     .read_line(&mut input)
+    //     .expect("Failed to read line.");
+
+    let letters = vec!['A', 'C', 'R', 'G', 'D', 'E'];
     let words_to_test = generate_permutations(&letters, &config.min_size);
-    
     for word in actual_words(dictionary, words_to_test) {
         println!("Dictionary has: {}!", word);
     }
@@ -62,13 +67,19 @@ fn actual_words(dictionary: Vec<String>, words_to_test: Vec<String>) -> Vec<Stri
 
 fn generate_permutations(letters: &Vec<char>, min_size: &usize) -> Vec<String> {
     let mut permutations: Vec<String> = Vec::new();
+    let mut vec_sizes: Vec<usize> = Vec::new();
 
-    for permutation in letters.iter().permutations(letters.len()).unique() {
-        let word: String = permutation.into_iter().collect();
-        if word.len() >= *min_size {
+    let mut cur_size = *min_size;
+    while cur_size <= letters.len() {
+        vec_sizes.push(cur_size);
+        cur_size = cur_size + 1;
+    }
+
+    for num_letters in vec_sizes {
+        for permutation in letters.iter().permutations(num_letters).unique() {
+            let word: String = permutation.into_iter().collect();
             permutations.push(word);
         }
     }
-
     permutations
 }
