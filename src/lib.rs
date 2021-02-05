@@ -34,12 +34,8 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         process::exit(1);
     });
 
-    let mut _input = String::new();
-    // println!("Please enter some letters: ");
-    // io::stdin()
-    //     .read_line(&mut input)
-    //     .expect("Failed to read line.");
-
+    let_input = get_user_input();
+    // let letters = separate_into_letters(input);
     let letters = vec!['A', 'C', 'R', 'G', 'D', 'E'];
     let words_to_test = generate_permutations(&letters, &config.min_size);
     for word in actual_words(dictionary, words_to_test) {
@@ -82,4 +78,14 @@ fn generate_permutations(letters: &Vec<char>, min_size: &usize) -> Vec<String> {
         }
     }
     permutations
+}
+
+fn get_user_input() -> String {
+    let mut input = String::new();
+    println!("Please enter some letters: ");
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line.");
+
+    input
 }
